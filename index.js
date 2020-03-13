@@ -103,12 +103,23 @@ server.put('/api/users/:id', (req,res)=>{
 
 })
 
- server.delete(()=>{
-     
+ server.delete('/api/users/:id',(req,res) => {
+    const {id} = req.params;
+    !id ? res.status(404).json({success: false, errorMessage: "The user with the specified ID does not exist." })
+    : db.remove(id)
+        .then(user => {
+            res.status(200).json({user})
+        })
+        .catch(err =>{
+            res
+              .status(500)
+              .json({
+                success: false,
+                errorMessage: "The user could not be removed",err
+              });
+        })
+
 
 
  })
 
-// server.patch('hubs/:id', (req, res)=>{
-
-// })
